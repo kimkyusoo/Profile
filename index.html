@@ -157,22 +157,41 @@
         }
         .project-card {
             background: linear-gradient(145deg, #1e293b, #151e2e); /* 카드 부각 효과 */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: scroll;
             border: 1px solid #334155;
             border-radius: 12px;
             padding: 30px 20px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease, border-color 0.3s ease;
             aspect-ratio: 4 / 3;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(30, 41, 59, 0.75);
+            border-radius: 12px;
+            z-index: 0;
+        }
+        .project-card h3, .project-card p {
+            position: relative;
+            z-index: 1;
         }
         .project-card:hover {
             transform: translateY(-6px);
-            background: linear-gradient(145deg, #253347, #1e293b);
             border-color: #4da8da;
             box-shadow: 0 12px 25px rgba(77, 168, 218, 0.15);
         }
@@ -323,7 +342,8 @@
             border: 1px solid transparent;
         }
         .project-detail.show {
-            max-height: 920px; 
+            max-height: 1200px; 
+            height: auto;
             padding: 30px 24px;
             border-color: #1e293b;
             box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
@@ -333,11 +353,41 @@
             background: rgba(77, 168, 218, 0.1);
             border: 1px solid #4da8da;
             color: #4da8da;
-            padding: 8px 16px;
+            padding: 8px 12px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .action-btn2 {
+            background: rgba(77, 168, 218, 0.1);
+            border: 1px solid #4da8da;
+            color: #4da8da;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+        .action-btn img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+        .action-btn2 img {
+            width: 30px;
+            height: 20px;
+            object-fit: contain;
+            margin-left: -5px;
         }
         .action-btn:hover {
             background: #4da8da;
@@ -347,15 +397,20 @@
         /* 갤러리 썸네일 스타일 */
         .gallery-thumbs {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 10px;
-            height: 100%; 
+            width: 100%;
+            max-height: 320px;
+            overflow-y: auto;
+            align-content: start;
+            padding-right: 4px;
         }
         .gallery-thumbs .thumb {
             width: 100%;
-            height: 100%;
-            background-size: cover;
+            aspect-ratio: 16 / 9;
+            min-height: 120px;
+            background-size: contain;
+            background-repeat: no-repeat;
             background-position: center;
             border-radius: 8px;
             border: 2px solid transparent;
@@ -370,7 +425,7 @@
             z-index: 2;
         }
         .gallery-main {
-            height: 420px; 
+            height: 400px; 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -382,7 +437,8 @@
         .gallery-main img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            object-position: center;
             border-radius: 10px;
         }
         .thumb.empty {
@@ -395,7 +451,7 @@
         /* detail-grid */
         .detail-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 6fr 4fr;
             grid-template-rows: 3fr 2fr 1fr; 
             gap: 20px;
             height: 100%;
@@ -403,11 +459,10 @@
         .grid-main { grid-column: 1 / 2; grid-row: 1 / 2; padding-right:12px; border-right: 1px solid #1e293b; }
         .grid-meta { grid-column: 2 / 3; grid-row: 1 / 2; overflow:auto; padding-left:12px; }
         .grid-meta strong { color: #ffffff; }
-        .grid-thumbs { grid-column: 1 / 2; grid-row: 2 / 3; }
+        .grid-thumbs { grid-column: 1 / 2; grid-row: 2 / 3; max-height: none; overflow: visible; }
         .grid-empty { grid-column: 2 / 3; grid-row: 2 / 3; }
-        .grid-bottom { grid-column: 1 / 3; grid-row: 3 / 4; display:flex; justify-content:space-between; align-items:center; border-top: 1px solid #1e293b; padding-top: 15px;}
+        .grid-bottom { grid-column: 1 / 3; grid-row: 3 / 4; display:flex; justify-content:center; align-items:center; gap:16px; border-top: 1px solid #1e293b; padding-top: 15px;}
         
-        .project-detail.show { height: 740px; }
         .project-detail { box-sizing: border-box; }
 
         /* 연락처 모달 */
@@ -519,7 +574,7 @@
                 <div class="skill-category">
                     <h3>언어</h3>
                     <ul class="skill-list">
-                        <li>C++ / C#</li>
+                        <li>C#</li>
                         <li>Python</li>
                         <li>Javascript</li>
                     </ul>
@@ -527,15 +582,14 @@
                 <div class="skill-category">
                     <h3>엔진</h3>
                     <ul class="skill-list">
-                        <li>Unity 3D</li>
-                        <li>Unreal Engine 5</li>
+                        <li>Unity</li>
                     </ul>
                 </div>
                 <div class="skill-category">
                     <h3>툴</h3>
                     <ul class="skill-list">
-                        <li>Git / GitHub</li>
-                        <li>Jira / Slack</li>
+                        <li>Git/li>
+                        <li>Jira</li>
                         <li>Visual Studio</li>
                     </ul>
                 </div>
@@ -553,17 +607,17 @@
         <section id="game-projects" class="tab-section">
             <h2>게임 프로젝트</h2>
             <div class="project-grid">
-                <div class="project-card" onclick="openDetailById('project-a')" data-id="project-a">
-                    <h3>프로젝트 A</h3>
-                    <p>클릭하여 상세 보기</p>
+                <div class="project-card" onclick="openDetailById('project-a')" data-id="project-a" data-background="../../2D_미니프로젝트/GIF/Title.png">
+                    <h3>Balatro</h3>
+                    <p>2D, 로그라이크, 덱 빌딩</p>
                 </div>
-                <div class="project-card" onclick="openDetailById('project-b')" data-id="project-b">
-                    <h3>프로젝트 B</h3>
-                    <p>클릭하여 상세 보기</p>
+                <div class="project-card" onclick="openDetailById('project-b')" data-id="project-b" data-background="../../1차프로젝트/GIF/Title.png">
+                    <h3>OVERLOAD</h3>
+                    <p>3D, 액션, 슈팅</p>
                 </div>
-                <div class="project-card" onclick="openDetailById('project-c')" data-id="project-c">
-                    <h3>프로젝트 C</h3>
-                    <p>클릭하여 상세 보기</p>
+                <div class="project-card" onclick="openDetailById('project-c')" data-id="project-c" data-background="../../최종 프로젝트/GIF/Title.png">
+                    <h3>MemTown</h3>
+                    <p>3D TPS, 액션, 2.5D 타이쿤, 방치형 </p>
                 </div>
             </div>
             
@@ -590,10 +644,9 @@
                     <div class="grid-empty"></div>
 
                     <div class="grid-bottom" id="gridBottom">
-                        <div style="display:flex; gap:12px;">
-                            <button id="linkBtn" class="action-btn">링크 보기</button>
-                            <button id="moreBtn" class="action-btn">상세보기</button>
-                        </div>
+                        <button id="githubBtn" class="action-btn"><img src="../../로고/Github.png" alt="GitHub" /><span>GitHub</span></button>
+                        <button id="documentBtn" class="action-btn2"><img src="../../로고/Google.png" alt="Docs" /><span>Docs</span></button>
+                        <button id="youtubeBtn" class="action-btn"><img src="../../로고/Youtube.png" alt="Youtube" /><span>Youtube</span></button>
                     </div>
                 </div>
             </div>
@@ -603,7 +656,7 @@
         <section id="tech-projects" class="tab-section">
             <h2>기술 프로젝트</h2>
             <div class="project-grid">
-                <div class="project-card" onclick="openTechDetailById('tech-a')" data-id="tech-a">
+                <div class="project-card" onclick="openTechDetailById('tech-a')" data-id="tech-a" data-background="">
                     <h3>기술 프로젝트 A</h3>
                     <p>클릭하여 상세 보기</p>
                 </div>
@@ -633,10 +686,9 @@
                     </div>
                     <div class="grid-empty"></div>
                     <div class="grid-bottom">
-                        <div style="display:flex; gap:12px;">
-                            <button id="techLinkBtn" class="action-btn">링크 보기</button>
-                            <button id="techMoreBtn" class="action-btn">상세보기</button>
-                        </div>
+                        <button id="techGithubBtn" class="action-btn"><img src="../../로고/Github.png" alt="GitHub" /><span>GitHub</span></button>
+                        <button id="techDocumentBtn" class="action-btn2"><img src="../../로고/Google.png" alt="Google" /><span>Docs</span></button>
+                        <button id="techYoutubeBtn" class="action-btn"><img src="../../로고/Youtube.png" alt="Youtube" /><span>Youtube</span></button>
                     </div>
                 </div>
             </div>
@@ -658,51 +710,90 @@
 
     <!-- 기능 제어를 위한 Javascript (기존 코드 완벽 유지) -->
     <script>
+        function normalizeImageEntry(image, fallbackWidth, fallbackHeight) {
+            if (!image) {
+                return { src: '', width: fallbackWidth || null, height: fallbackHeight || null };
+            }
+            if (typeof image === 'string') {
+                return { src: image, width: fallbackWidth || null, height: fallbackHeight || null };
+            }
+            return {
+                src: image.src || '',
+                width: image.width || fallbackWidth || null,
+                height: image.height || fallbackHeight || null
+            };
+        }
+
+        function buildImageUrl(url, width, height) {
+            if (!url) return '';
+            try {
+                var parsed = new URL(url);
+                var isGitHubAttachment = parsed.hostname.indexOf('github.com') !== -1 && parsed.pathname.indexOf('/user-attachments/') !== -1;
+                if (isGitHubAttachment) return url;
+                if (width) parsed.searchParams.set('w', String(width));
+                if (height) parsed.searchParams.set('h', String(height));
+                return parsed.toString();
+            } catch (error) {
+                return url;
+            }
+        }
+
         var PROJECT_DATA = {
             'project-a': {
-                period: '1인 Project / 26.04 ~ 26.04',
-                title: '스마일모(모작)',
-                tagline: '바이러스로부터 목표 지점까지 도달하는 하드코어 플랫폼퍼 게임',
-                role: '기획, 게임 플레이 시스템, 레벨 디자인, UI',
+                period: '1인 Project / 26.04. 08 ~ 26.04. 28',
+                title: 'Balatro(모작)',
+                tagline: '포커 족보와 특수 효과가 부여된 조커 카드를 조합해 점수를 획득하는 로그라이크 덱 빌딩 게임 ',
+                role: '<ul><li><b>·</b> 게임 플레이 시스템</li><li><b>·</b> 레벨 디자인</li><li><b>·</b> UI</li></ul>',
                 tech: 'Unity, C#, GitHub',
-                feature: '<ul><li>플레이어 이동 및 점프</li><li>레벨별 난이도 구성</li><li>적 AI 패턴</li></ul>',
+                feature: '<ul><li><b>·</b> 카드 생성, 셔플 & 드로우(Fisher-Yates)</li><li><b>·</b> 포커 족보 판정 엔진 구현</li><li><b>·</b> 순차 점수 계산 및 조커 카드 효과 시스템</li><li><b>·</b> 씬 간 데이터 유지 및 상점 시스템</li><li><b>·</b> 포커 족보, 게임 내 자원 강화 시스템</li></ul>',
                 images: [
-                    'https://picsum.photos/id/1015/800/450',
-                    'https://picsum.photos/id/1015/200/120',
-                    'https://picsum.photos/id/1016/200/120',
-                    'https://picsum.photos/id/1020/200/120'
+                    { src: '../../2D_미니프로젝트/GIF/Title.gif', width: 1200, height: 675 },
+                    { src: '../../2D_미니프로젝트/GIF/GamePlay.gif', width: 1200, height: 675 },
+                    { src: '../../2D_미니프로젝트/GIF/Score.gif', width: 1200, height: 675 },
+                    { src: '../../2D_미니프로젝트/GIF/Shop.gif', width: 1200, height: 675 },
+                    { src: '../../2D_미니프로젝트/GIF/GameOver.gif', width: 1200, height: 675 },
                 ],
-                linkUrl: 'https://example.com/project-a',
-                detailUrl: 'https://example.com/project-a/details'
+                linkUrl: 'https://github.com/kimkyusoo/Balatro-Mock',
+                detailUrl: 'https://docs.google.com/document/d/1q5IFi87n_wswzj5bvQS97Zwrxj270M2bwsxG0-iqJDs/edit?tab=t.0#heading=h.vi044uyymfyf',
+                youtubeUrl: ''
             },
             'project-b': {
-                period: '팀 Project / 25.01 ~ 25.06',
-                title: '프로젝트 B',
-                tagline: '프로젝트 B 한 줄 설명',
-                role: '클라이언트 개발',
-                tech: 'Unreal, C++',
-                feature: '<p>핵심 기능 요약</p>',
+                period: '2인 팀 Project / 25.05. 28 ~ 25.06. 24',
+                title: 'OVERLOAD',
+                tagline: '전투를 통해 파츠를 수집 및 장착하여 최종 보스를 처치하는 3D TPS 로그라이크 슈팅 게임',
+                role: '<ul><li><b>·</b> 전투 시스템</li><li><b>·</b> 카메라 전환</li><li><b>·</b> 전투 이펙트 연출</li><li><b>·</b> 적 AI 구현</li></ul>',
+                tech: 'Unity, C#, GitHub',
+                feature: '<ul><li><b>·</b> Raycast 기반 전투 시스템</li><li><b>·</b> 조준 사격 카메라 전환</li><li><b>·</b> 내구도 기반 파츠 시스템</li><li><b>·</b> 전투 이펙트 연출</li><li><b>·</b> Behavior Tree를 통한 적 AI 구현</li></ul>',
+
                 images: [
-                    'https://picsum.photos/id/1025/800/450',
-                    'https://picsum.photos/id/1025/200/120',
-                    'https://picsum.photos/id/1027/200/120'
+                    { src: '../../1차프로젝트/GIF/Title.png', width: 1200, height: 675 },
+                    { src: '../../1차프로젝트/GIF/GamePlay.gif', width: 1200, height: 675 },
+                    { src: '../../1차프로젝트/GIF/Battle.gif', width: 1200, height: 675 },
+                    { src: '../../1차프로젝트/GIF/Death.gif', width: 1200, height: 675 }
                 ],
-                linkUrl: 'https://example.com/project-b',
-                detailUrl: 'https://example.com/project-b/details'
+                linkUrl: 'https://github.com/3D-Game-Project/OVERLOAD',
+                detailUrl: 'https://example.com/project-b/details',
+                youtubeUrl: ''
             },
             'project-c': {
-                period: '개인 Project / 24.08 ~ 24.12',
-                title: '프로젝트 C',
-                tagline: '프로젝트 C 요약',
-                role: '기획/개발',
-                tech: 'Godot, GDScript',
-                feature: '<p>간단한 특징 목록</p>',
+                period: '5인 팀 Project / 24.07. 03 ~ 24.08. 12',
+                title: 'MemTown',
+                tagline: '월드를 탐험하고 귀여운 펫 Mem과 함께 영지를 \n발전하는 3D TPS 액션 X 2.5D 타이쿤 방치형 게임',
+                role: '<ul><li><b>·</b> 격자 타일형 건물 배치 및 롤백 시스템</li><li><b>·</b> 건물 자동화 엔진</li><li><b>·</b> 오프라인 보상 시스템</li><li><b>·</b> 데이터 저장 및 불러오기</li></ul>',
+                tech: 'Unity, C#, GitHub',
+                feature: '<ul><li><b>·</b> Isometric View 카메라 조작</li><li><b>·</b> 격자 타일형 건물 배치 및 롤백 시스템</li><li><b>·</b> 배치 건물 기반 자동화 엔진 및 UI</li><li><b>·</b> JSON 기반 데이터 저장 및 불러오기</li> <li><b>·</b> 데이터 기반 오프라인 시스템 구현</li></ul>',
                 images: [
-                    'https://picsum.photos/id/1035/800/450',
-                    'https://picsum.photos/id/1035/200/120'
+                    { src: '../../최종 프로젝트/GIF/Title.gif', width: 1200, height: 675 },
+                    { src: '../../최종 프로젝트/GIF/GamePlay.gif', width: 1200, height: 675 },
+                    { src: '../../최종 프로젝트/GIF/Tree.gif', width: 1200, height: 675 },
+                    { src: '../../최종 프로젝트/GIF/Battle.gif', width: 1200, height: 675 },
+                    { src: '../../최종 프로젝트/GIF/WayPoint.gif', width: 1200, height: 675 },
+                    { src: '../../최종 프로젝트/GIF/Crafting.gif', width: 1200, height: 675 },
+                    { src: '../../최종 프로젝트/GIF/Producting.gif', width: 1200, height: 675 },
                 ],
-                linkUrl: 'https://example.com/project-c',
-                detailUrl: 'https://example.com/project-c/details'
+                linkUrl: 'https://github.com/kimkyusoo/MemTown',
+                detailUrl: 'https://example.com/project-c/details',
+                youtubeUrl: ''
             }
         };
 
@@ -715,17 +806,28 @@
                 tech: 'C#, Vulkan',
                 feature: '<ul><li>멀티스레드 렌더링</li><li>데이터 지향 설계</li></ul>',
                 images: [
-                    'https://picsum.photos/id/1043/800/450',
-                    'https://picsum.photos/id/1043/200/120',
-                    'https://picsum.photos/id/1044/200/120',
-                    'https://picsum.photos/id/1045/200/120'
+                    { src: '../../최종 프로젝트/GIF/Title.gif', width: 1200, height: 675 },
+                    { src: '../../최종 프로젝트/GIF/Feature.gif', width: 1200, height: 675 },
+                    { src: '../../최종 프로젝트/GIF/ gameplay.gif', width: 1200, height: 675 },
+                    { src: '../../최종 프로젝트/GIF/Death.gif', width: 1200, height: 675 }
                 ],
                 linkUrl: 'https://example.com/tech-a',
-                detailUrl: 'https://example.com/tech-a/details'
+                detailUrl: 'https://example.com/tech-a/details',
+                youtubeUrl: ''
             }
         };
 
         var CURRENT_OPEN_ID = null;
+
+        function applyImageToMain(mainImg, imageEntry, width, height) {
+            var src = buildImageUrl(imageEntry.src, width, height);
+            mainImg.src = src;
+            mainImg.alt = '프로젝트 이미지';
+            mainImg.style.width = '100%';
+            mainImg.style.height = '100%';
+            mainImg.style.objectFit = 'contain';
+            mainImg.style.objectPosition = 'center';
+        }
 
         function openDetailById(id) {
             if (CURRENT_OPEN_ID === id) {
@@ -741,32 +843,33 @@
             document.getElementById('detailPeriod').innerText = data.period || '';
             document.getElementById('detailTitle').innerText = data.title || '';
             document.getElementById('detailTagline').innerText = data.tagline || '';
-            document.getElementById('detailRole').innerText = data.role || '';
+            document.getElementById('detailRole').innerHTML = data.role || '';
             document.getElementById('detailTech').innerText = data.tech || '';
             document.getElementById('detailFeature').innerHTML = data.feature || '';
 
             var mainImg = document.getElementById('detailMainImage');
             var thumbs = document.getElementById('detailThumbs');
             thumbs.innerHTML = '';
-            for (var i = 0; i < 8; i++) {
-                var src = (data.images && data.images[i]) ? data.images[i] : null;
+            var imageCount = data.images ? data.images.length : 0;
+            for (var i = 0; i < imageCount; i++) {
+                var entry = normalizeImageEntry(data.images[i], 200, 120);
+                var src = buildImageUrl(entry.src, entry.width || 200, entry.height || 120);
                 var div = document.createElement('div');
                 div.dataset.index = i;
-                div.className = 'thumb' + (src ? '' : ' empty');
-                if (src) {
-                    div.style.backgroundImage = 'url("'+src+'")';
-                    (function(s, idx, el){
-                        el.addEventListener('click', function(){
-                            thumbs.querySelectorAll('.thumb').forEach(function(t){ t.classList.remove('selected'); });
-                            el.classList.add('selected');
-                            mainImg.src = s;
-                        });
-                    })(src, i, div);
-                }
+                div.className = 'thumb';
+                div.style.backgroundImage = 'url("' + src + '")';
+                (function(s, el){
+                    el.addEventListener('click', function(){
+                        thumbs.querySelectorAll('.thumb').forEach(function(t){ t.classList.remove('selected'); });
+                        el.classList.add('selected');
+                        mainImg.src = s;
+                    });
+                })(src, div);
                 thumbs.appendChild(div);
             }
             if (data.images && data.images.length) {
-                mainImg.src = data.images[0];
+                var firstImage = normalizeImageEntry(data.images[0], 1200, 675);
+                applyImageToMain(mainImg, firstImage, firstImage.width || 1200, firstImage.height || 675);
                 var allThumbs = thumbs.querySelectorAll('.thumb');
                 for (var j = 0; j < allThumbs.length; j++) {
                     var t = allThumbs[j];
@@ -776,10 +879,12 @@
                 mainImg.src = '';
             }
 
-            var linkBtn = document.getElementById('linkBtn');
-            var moreBtn = document.getElementById('moreBtn');
-            linkBtn.onclick = function(){ if (data.linkUrl) window.open(data.linkUrl, '_blank'); };
-            moreBtn.onclick = function(){ if (data.detailUrl) window.open(data.detailUrl, '_blank'); };
+            var githubBtn = document.getElementById('githubBtn');
+            var documentBtn = document.getElementById('documentBtn');
+            var youtubeBtn = document.getElementById('youtubeBtn');
+            githubBtn.onclick = function(){ if (data.linkUrl) window.open(data.linkUrl, '_blank'); };
+            documentBtn.onclick = function(){ if (data.detailUrl) window.open(data.detailUrl, '_blank'); };
+            youtubeBtn.onclick = function(){ if (data.youtubeUrl) window.open(data.youtubeUrl, '_blank'); };
 
             detail.classList.add('show');
             detail.scrollIntoView({behavior: 'smooth', block: 'start'});
@@ -793,6 +898,14 @@
         }
 
         document.addEventListener('DOMContentLoaded', function(){
+            // 프로젝트 카드 배경 이미지 설정
+            document.querySelectorAll('.project-card[data-background]').forEach(function(card){
+                var bgUrl = card.getAttribute('data-background');
+                if (bgUrl) {
+                    card.style.backgroundImage = 'url("' + bgUrl + '")';
+                }
+            });
+            
             document.querySelectorAll('.nav-links button').forEach(function(btn){
                 btn.addEventListener('click', function(){
                     var target = this.getAttribute('data-target');
@@ -831,15 +944,46 @@
             document.getElementById('techDetailPeriod').innerText = data.period || '';
             document.getElementById('techDetailTitle').innerText = data.title || '';
             document.getElementById('techDetailTagline').innerText = data.tagline || '';
-            document.getElementById('techDetailRole').innerText = data.role || '';
+            document.getElementById('techDetailRole').innerHTML = data.role || '';
             document.getElementById('techDetailTech').innerText = data.tech || '';
             document.getElementById('techDetailFeature').innerHTML = data.feature || '';
 
             var mainImg = document.getElementById('techDetailMainImage');
-            var thumbs = document.getElementById('techDetailThumbs'); thumbs.innerHTML = '';
-            for (var i=0;i<8;i++){ var src=(data.images&&data.images[i])?data.images[i]:null; var div=document.createElement('div'); div.dataset.index=i; div.className='thumb'+(src?'':' empty'); if(src){ div.style.backgroundImage='url("'+src+'")'; (function(s,el){ el.addEventListener('click', function(){ thumbs.querySelectorAll('.thumb').forEach(function(t){t.classList.remove('selected');}); el.classList.add('selected'); mainImg.src = s; }); })(src,div); } thumbs.appendChild(div); }
-            if (data.images && data.images.length) { mainImg.src = data.images[0]; var allThumbs=thumbs.querySelectorAll('.thumb'); for(var j=0;j<allThumbs.length;j++){ var t=allThumbs[j]; if(!t.classList.contains('empty')){ t.classList.add('selected'); break; } } } else mainImg.src='';
-            var linkBtn = document.getElementById('techLinkBtn'); var moreBtn = document.getElementById('techMoreBtn'); linkBtn.onclick=function(){ if(data.linkUrl) window.open(data.linkUrl,'_blank'); }; moreBtn.onclick=function(){ if(data.detailUrl) window.open(data.detailUrl,'_blank'); };
+            var thumbs = document.getElementById('techDetailThumbs');
+            thumbs.innerHTML = '';
+            var imageCount = data.images ? data.images.length : 0;
+            for (var i = 0; i < imageCount; i++) {
+                var entry = normalizeImageEntry(data.images[i], 200, 120);
+                var src = buildImageUrl(entry.src, entry.width || 200, entry.height || 120);
+                var div = document.createElement('div');
+                div.dataset.index = i;
+                div.className = 'thumb';
+                div.style.backgroundImage = 'url("' + src + '")';
+                (function(s, el){
+                    el.addEventListener('click', function(){
+                        thumbs.querySelectorAll('.thumb').forEach(function(t){ t.classList.remove('selected'); });
+                        el.classList.add('selected');
+                        mainImg.src = s;
+                    });
+                })(src, div);
+                thumbs.appendChild(div);
+            }
+            if (data.images && data.images.length) {
+                var firstImage = normalizeImageEntry(data.images[0], 1200, 675);
+                applyImageToMain(mainImg, firstImage, firstImage.width || 1200, firstImage.height || 675);
+                var allThumbs = thumbs.querySelectorAll('.thumb');
+                for (var j = 0; j < allThumbs.length; j++) {
+                    var t = allThumbs[j];
+                    if (!t.classList.contains('empty')) { t.classList.add('selected'); break; }
+                }
+            } else {
+                mainImg.src = '';
+            }
+
+            var githubBtn = document.getElementById('techGithubBtn'); var documentBtn = document.getElementById('techDocumentBtn'); var youtubeBtn = document.getElementById('techYoutubeBtn');
+            githubBtn.onclick = function(){ if(data.linkUrl) window.open(data.linkUrl,'_blank'); };
+            documentBtn.onclick = function(){ if(data.detailUrl) window.open(data.detailUrl,'_blank'); };
+            youtubeBtn.onclick = function(){ if(data.youtubeUrl) window.open(data.youtubeUrl,'_blank'); };
             detail.classList.add('show'); detail.scrollIntoView({behavior:'smooth', block:'start'});
         }
     </script>
